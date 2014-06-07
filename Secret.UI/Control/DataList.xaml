@@ -1,0 +1,114 @@
+﻿<phone:PhoneApplicationPage
+    x:Class="Secret.UI.Control.DataList"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"    
+    xmlns:toolkit="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone.Controls.Toolkit" 
+    xmlns:Converter="clr-namespace:Cnljli.WPViewModel.ValueConverter;assembly=Cnljli.WPViewModel"
+    xmlns:domain="clr-namespace:Secret.Domain;assembly=Secret.Domain"
+    Style="{StaticResource BackwardForwardPageStyle}"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    mc:Ignorable="d"
+    shell:SystemTray.IsVisible="True"
+    shell:SystemTray.Opacity="0"
+    shell:SystemTray.ForegroundColor="WhiteSmoke">
+    <shell:SystemTray.ProgressIndicator>
+        <shell:ProgressIndicator
+        IsIndeterminate="{Binding IsIndeterminate}"
+        IsVisible="{Binding IsLoad}"
+        Text="{Binding LoadText}" />
+    </shell:SystemTray.ProgressIndicator>
+    <Grid Style="{StaticResource BgImg}">
+        <Grid.Resources>
+            <Converter:SubStringConverter x:Key="SubStringConverter"/>
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <TextBlock  Grid.Row="0" Foreground="WhiteSmoke" Margin="12,35,0,20" Text="{Binding Title}"/>
+        <ScrollViewer Grid.Row="1" >
+            <ScrollViewer.Background>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FF052349" Offset="0"/>
+                    <GradientStop Color="White" Offset="0.009"/>
+                </LinearGradientBrush>
+            </ScrollViewer.Background>
+            <phone:LongListSelector x:Name="a" ItemsSource="{Binding VirtuaData}">
+                <phone:LongListSelector.Resources>
+                    <Style x:Key="title" TargetType="TextBlock">
+                        <Setter Property="Foreground" Value="Black"/>
+                        <Setter Property="FontSize" Value="25"/>
+                        <Setter Property="FontWeight" Value="Bold"/>
+                        <Setter Property="Margin" Value="10,5,0,0"/>
+                    </Style>
+                    <Style x:Key="body" TargetType="TextBlock">
+                        <Setter Property="Foreground" Value="#929EAC"/>
+                        <Setter Property="FontSize" Value="20"/>
+                        <Setter Property="TextWrapping" Value="Wrap"/>
+                        <Setter Property="Margin" Value="25,20,15,10"/>
+                    </Style>
+                    <Style x:Key="border" TargetType="Border">
+                        <Setter  Property="BorderBrush" Value="#FF052349" />
+                        <Setter  Property="BorderThickness" Value="0.8" />
+                        <Setter  Property="Margin" Value="10,5,10,5" />
+                    </Style>
+                </phone:LongListSelector.Resources>
+                <phone:LongListSelector.ItemTemplate>
+                    <DataTemplate>
+                        <domain:DataListTemplateSelector Content="{Binding}">
+                            <domain:DataListTemplateSelector.Normal>
+                                <DataTemplate>
+                                    <Border Style="{StaticResource border}">
+                                        <toolkit:GestureService.GestureListener>
+                                            <toolkit:GestureListener  DoubleTap="GestureListener_DoubleTap" />
+                                        </toolkit:GestureService.GestureListener>
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="*"/>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+                                            <TextBlock Grid.Row="0" Style="{StaticResource title}" Text="{Binding title}" />
+                                            <TextBlock Grid.Row="1"  Style="{StaticResource body}"
+                                   Text="{Binding content,Converter={StaticResource SubStringConverter},ConverterParameter=150}" />
+                                            <Grid  Grid.Row="2" >
+                                                <Grid.Resources>
+                                                    <Style TargetType="TextBlock">
+                                                        <Setter  Property="Margin" Value="10,5,10,5" />
+                                                        <Setter Property="Foreground" Value="#929EAC"/>
+                                                    </Style>
+                                                </Grid.Resources>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition />
+                                                    <ColumnDefinition />
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Grid.Column="0" HorizontalAlignment="Left">
+                                        <Run Text="{Binding score}"></Run>人参与
+                                                </TextBlock>
+                                                <TextBlock Grid.Column="1" HorizontalAlignment="Right">
+                                        <Run Text="{Binding Post_at}"></Run>
+                                                </TextBlock>
+                                            </Grid>
+                                        </Grid>
+                                    </Border>
+                                </DataTemplate>
+                            </domain:DataListTemplateSelector.Normal>
+                            <domain:DataListTemplateSelector.WhiteSpaceTitle>
+                                <DataTemplate>
+                                </DataTemplate>
+                            </domain:DataListTemplateSelector.WhiteSpaceTitle>
+                        </domain:DataListTemplateSelector>
+                    </DataTemplate>
+                </phone:LongListSelector.ItemTemplate>
+            </phone:LongListSelector>
+        </ScrollViewer>
+    </Grid>
+
+</phone:PhoneApplicationPage>

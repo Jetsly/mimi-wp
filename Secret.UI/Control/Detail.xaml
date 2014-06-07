@@ -1,0 +1,131 @@
+﻿<phone:PhoneApplicationPage
+    x:Class="Secret.UI.Control.Detail"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    Foreground="White"
+    mc:Ignorable="d"
+    shell:SystemTray.IsVisible="True"
+    shell:SystemTray.Opacity="0"
+    shell:SystemTray.ForegroundColor="WhiteSmoke">
+    <shell:SystemTray.ProgressIndicator>
+        <shell:ProgressIndicator
+        IsIndeterminate="{Binding IsIndeterminate}"
+        IsVisible="{Binding IsLoad}"
+        Text="{Binding LoadText}" />
+    </shell:SystemTray.ProgressIndicator>
+    <Grid Style="{StaticResource BgImg}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <TextBlock Grid.Row="0" Margin="12,25,0,28"
+                       Text="{Binding Title}"/>
+        <phone:Pivot Grid.Row="1" Background="White" Foreground="#AAD3E9">
+            <phone:Pivot.Resources>
+                <Style x:Key="info" TargetType="TextBlock">
+                    <Setter Property="Foreground" Value="#929EAC"/>
+                    <Setter Property="FontSize" Value="23"/>
+                    <Setter Property="LineHeight" Value="40"/>
+                    <Setter Property="Margin" Value="0,0,0,0"/>
+                    <Setter Property="TextWrapping" Value="Wrap"/>
+                </Style>
+                <Style x:Key="border" TargetType="Border">
+                    <Setter  Property="BorderBrush" Value="#FF052349" />
+                    <Setter  Property="BorderThickness" Value="0.5" />
+                    <Setter  Property="Margin" Value="0,0,0,20" />
+                </Style>
+            </phone:Pivot.Resources>
+            <phone:PivotItem Header="正文">               
+                <ScrollViewer>
+                    <StackPanel>
+                        <TextBlock HorizontalAlignment="Right">
+                            <Run Text="{Binding Author}"></Run>
+                        </TextBlock>
+                        <TextBlock HorizontalAlignment="Right">
+                            <Run Text="{Binding Create}"></Run>
+                        </TextBlock>
+                        <phone:LongListSelector Margin="0,15,0,0" 
+                                                ItemsSource="{Binding Content}" >
+                                <phone:LongListSelector.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock 
+                                            Style="{StaticResource info}"
+                                            Text="{Binding}"/>
+                                    </DataTemplate>
+                                </phone:LongListSelector.ItemTemplate>
+                            </phone:LongListSelector>
+                        <Border Style="{StaticResource border}"  Visibility="{Binding HavAppend}" />
+                        <phone:LongListSelector ItemsSource="{Binding Appending}"
+                                                Visibility="{Binding HavAppend}">
+                            <phone:LongListSelector.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel>
+                                        <TextBlock Style="{StaticResource info}">
+                                            <Run Text="秘密追加：" FontWeight="Bold"></Run>
+                                            <LineBreak />
+                                            <Run Text="{Binding content}"></Run>
+                                        </TextBlock>
+                                        <TextBlock  HorizontalAlignment="Right"
+                                                    Foreground="#929EAC"
+                                                    Text="{Binding Created_at}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </phone:LongListSelector.ItemTemplate>
+                        </phone:LongListSelector>
+                    </StackPanel>
+                </ScrollViewer>
+            </phone:PivotItem>
+            <phone:PivotItem Header="评论">
+                <ScrollViewer>
+                    <phone:LongListSelector ItemsSource="{Binding Comment}">
+                        <phone:LongListSelector.ItemTemplate>
+                            <DataTemplate>
+                                <Border
+                                    Style="{StaticResource border}"
+                                    Margin="15,0,20,10">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition />
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Grid.Row="0" 
+                                                   Grid.Column="0"
+                                                   Grid.ColumnSpan="2" 
+                                                   Margin="20,10,10,0"
+                                                   Style="{StaticResource info}">                                          
+                                                 <Run Text="{Binding content}"></Run>
+                                        </TextBlock>
+                                        <TextBlock Grid.Row="1" 
+                                                   Grid.Column="0"  
+                                                   HorizontalAlignment="Left"
+                                                   Margin="10,10,0,10"
+                                                   FontSize="23"
+                                                   Foreground="#AAD3E9"
+                                                   Text="{Binding login}"/>
+                                        <TextBlock Grid.Row="1"
+                                                   Grid.Column="1"   
+                                                   HorizontalAlignment="Right"
+                                                   Margin="0,10,10,10"
+                                                   Foreground="#929EAC"
+                                                   Text="{Binding Created_at}"/>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </phone:LongListSelector.ItemTemplate>
+                    </phone:LongListSelector>
+                </ScrollViewer>
+            </phone:PivotItem>
+        </phone:Pivot>
+    </Grid>
+</phone:PhoneApplicationPage>
